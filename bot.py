@@ -6,6 +6,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.action_chains import ActionChains
 
+# Start Selenium, log in and return driver
 def start_bot():
 	# Launch browser
 	print('Launching Selenium')
@@ -33,6 +34,13 @@ def start_bot():
 	time.sleep(2)
 	# Returns the driver
 	return driver
+
+# Get member list
+def get_members():
+	ret = list()
+	for member in driver.find_elements_by_class_name('_8slc'):
+		ret.append(member.text)
+	return ret
 
 # Get NEW messages from messenger
 def get_messages():
@@ -76,6 +84,10 @@ driver = start_bot()
 get_messages()
 print('Bot up and running...')
 
+# Say hi to chat
+print(f'\tBot started and connected')
+bot_send('[BOT] Hi :P')
+
 # Check every two seconds
 while True:
 	# Exit loop if driver doesn't exist
@@ -89,10 +101,11 @@ while True:
 				continue
 			
 			# Answer to bot stuff
+			o_text = text
 			text = text.lower()
 			if text == '!help':
 				print(f'\tReplying to help from "{name}"')
-				bot_send(f'[BOT] Commands: !ping, !whoami')
+				bot_send(f'[BOT] Commands: !ping, !whoami, !spam <message>')
 			elif text == '!quit':
 				print(f'\tBot shut down by "{name}"')
 				bot_send('[BOT] Bye')
@@ -107,9 +120,9 @@ while True:
 				print(f'\tReplying to whoami from "{name}"')
 				bot_send(f'[BOT] You\'re {name}')
 			elif text.find('!spam') == 0:
-				print(f'\tSpamming "{text[6:]}" for "{name}"')
+				print(f'\tSpamming "{o_text[6:]}" for "{name}"')
 				for i in range(9):
-					bot_send(f'[BOT]<spam> {text[6:]}')
+					bot_send(f'[BOT] {o_text[6:]}')
 			
 			# Random ticks
 			if text.find('gej') != -1 or text.find('gay') != -1:
