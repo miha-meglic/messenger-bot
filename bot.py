@@ -50,10 +50,14 @@ def get_messages():
 		name = ''
 		try:
 			name = mes_group.find_element_by_xpath('h5').text
-		except: continue
+		except:
+			try:
+				name = mes_group.find_element_by_class_name('_4k7a').text
+				name = name[:name.find(' replied')]
+			except: continue
 		# Get texts (if not already seen)
 		texts = list()
-		for text in mes_group.find_elements_by_class_name('direction_ltr'):
+		for text in mes_group.find_elements_by_class_name('_aok'):
 			if text not in text_hashes:
 				text_hashes.append(text)
 				texts.append(text.text.replace('\n', ' '))
@@ -130,5 +134,5 @@ while True:
 				bot_send(f'[BOT] {name} je gej')
 			if text.find('roza') != -1:
 				print(f'\tReplying to "{name}", who said "roza"')
-				bot_send(f'[BOT] Joštova najljubša beseda je roza')
+				bot_send(f'[BOT] Joštova najljubša barva je roza')
 	time.sleep(2)
