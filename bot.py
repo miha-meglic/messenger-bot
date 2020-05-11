@@ -1,5 +1,6 @@
 import time
 import os
+import random
 from dotenv import load_dotenv
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
@@ -81,6 +82,9 @@ text_hashes = list()
 # ChatID for the chat to be used
 chatID = '1275398675887743'
 
+# Magic 8-ball responses
+m8 = ['It is certain', 'It is decidedly so', 'Without a doubt', 'Yes – definitely', 'You may rely on it', 'As I see it, yes', 'Most likely', 'Outlook good', 'Yes', 'Signs point to yes', 'Reply hazy, try again', 'Ask again later', 'Better not tell you now', 'Cannot predict now', 'Concentrate and ask again', 'Don\'t count on it', 'My reply is no', 'My sources say no', 'Outlook not so good', 'Very doubtful']
+
 # Starts bot
 driver = start_bot()
 
@@ -109,7 +113,7 @@ while True:
 			text = text.lower()
 			if text == '!help':
 				print(f'\tReplying to help from "{name}"')
-				bot_send(f'[BOT] Commands: !ping, !whoami, !spam <message>')
+				bot_send(f'[BOT] Commands: !ping, !whoami, !spam <message>, !question <question>')
 			elif text == '!quit':
 				print(f'\tBot shut down by "{name}"')
 				bot_send('[BOT] Bye')
@@ -127,6 +131,10 @@ while True:
 				print(f'\tSpamming "{o_text[6:]}" for "{name}"')
 				for i in range(9):
 					bot_send(f'[BOT] {o_text[6:]}')
+			elif text.find('!question') == 0:
+				answer = m8[random.randrange(len(m8))]
+				print(f'\tAnswering "{answer}" to "{o_text[10:]}" for "{name}"')
+				bot_send(f'[BOT] {answer}')
 			
 			# Random ticks
 			if text.find('gej') != -1 or text.find('gay') != -1:
